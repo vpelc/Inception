@@ -6,35 +6,47 @@
 #    By: vpelc <vpelc@student.s19.be>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/28 14:43:37 by vpelc             #+#    #+#              #
-#    Updated: 2026/01/28 15:44:05 by vpelc            ###   ########.fr        #
+#    Updated: 2026/01/30 14:40:42 by vpelc            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all :
-		@docker-compose -f src/docker-compose.yml up --build -d --no-cache
+NAME = inception
+
+COMPOSE_FILE = src/docker-compose.yml
+
+PATH = /home/$(USER)/data
+
+all : build up
+
+build : 
+	@echo "\e[1;36mBuilding Docker images\e[0m"
+	@mkdir -p $(DATA_PATH)/mysql $(DATA_PATH)/wordpress
+	@cd src/ && docker-compose build
 
 up :
-		@docker-compose -f src/docker-compose.yml up -d
+	@echo "\e[1;33mStarting containers\e[0m"
+	@cd src/ && docker-compose up
 		
 down:
-		@docker-compose -f src/docker-compose.yml down
+	@echo "\e[1;31mStopping containers\e[0m"
+	@cd srcs/ && docker-compose down
 		
-clean: 
-		@chmod 744 clean.sh
-		@./clean.sh
+clean: down
+	@echo "\e[1;32mCleaning up\e[0m"
+	@docker system prune -af
+	@docker volume prune -f
+	
+fclean: clean
+	@echo "\e[1;35mFull cleanup\e[0m"
+	@sudo rm -rf $(DATA_PATH)
+	@docker system prune -af --volumes
 
-info:	
-		@echo
-		@echo "\e[1;33m---networks---\e[0m"
-		@docker network ls
-		@echo
-		@echo "\e[1;32m---mounted images---\e[0m"
-		@docker images
-		@echo
-		@echo "\e[1;36m---containers---\e[0m"
-		@docker ps -a
-		@echo
-		@echo "\e[1;35---volumes---\e[0m"
-		@docker volumes ls
+re: fclean all
 
-.PHONY: all up down clean info 
+logs:
+	@timeout 30s docker-compose -f $(COMPOSE_FILE) logs -f || echo "Log viewing timed out"
+
+status:
+	@docker-compose -f $(COMPOSE_FILE) ps
+
+.PHONY: all build up down clean fclean re logs status
