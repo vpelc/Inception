@@ -6,7 +6,7 @@
 #    By: vpelc <vpelc@student.s19.be>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/28 14:43:37 by vpelc             #+#    #+#              #
-#    Updated: 2026/01/30 14:40:42 by vpelc            ###   ########.fr        #
+#    Updated: 2026/02/03 15:23:41 by vpelc            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = inception
 
 COMPOSE_FILE = src/docker-compose.yml
 
-PATH = /home/$(USER)/data
+DATA_PATH = /home/$(USER)/data
 
 all : build up
 
