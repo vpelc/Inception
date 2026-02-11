@@ -47,7 +47,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     echo "Core install"
     wp core install --allow-root \
         --url="${DOMAIN_NAME}" \
-        --title="Inception42" \
+        --title="Deception" \
         --admin_user="${WP_ADMIN}" \
         --admin_password="${WP_ADMIN_PASSWORD}" \
         --admin_email="${WP_ADMIN_EMAIL}" \
