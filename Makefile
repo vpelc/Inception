@@ -29,7 +29,7 @@ up :
 		
 down:
 	@echo "\e[1;31mStopping containers\e[0m"
-	@cd srcs/ && sudo docker compose down
+	@cd src/ && sudo docker compose down
 		
 clean: down
 	@echo "\e[1;32mCleaning up\e[0m"
